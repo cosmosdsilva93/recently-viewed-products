@@ -9,11 +9,11 @@ const getRecentlyViewedProducts = async (req, res) => {
     let cache = [];
 
     cache = await redisClient.get(`recentlyViewed:${userId}`);
-    console.log(cache);
+    // console.log(cache);
     
     if (cache) return res.status(200).send(JSON.parse(cache));
 
-    res.status(200).send(detailedProductsData);
+    res.status(200).send(cache);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

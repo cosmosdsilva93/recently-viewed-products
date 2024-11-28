@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+require("dotenv").config();
 const handlebars = require('express-handlebars');
 const apiRoutes = require('./routes/apiRoutes');
 const appRoutes = require('./routes/appRoutes');
