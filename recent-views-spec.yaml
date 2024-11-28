@@ -1,0 +1,97 @@
+openapi: 3.0.1
+info:
+  title: Recently Viewed Products API
+  description: API to retrieve the list of recently viewed products for a specific user.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local Development Server
+paths:
+  /users/{userId}/recentlyViewed:
+    get:
+      summary: Get recently viewed products
+      description: Retrieve a list of recently viewed products for a specific user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user.
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of recently viewed products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: The unique identifier for the product.
+                    name:
+                      type: string
+                      description: The name of the product.
+                    viewCount:
+                      type: integer
+                      description: Number of times the product was viewed.
+                    timestamp:
+                      type: integer
+                      description: Unix timestamp (milliseconds) of the view event.
+                example:
+                  - id: "004"
+                    name: "PlayStation 4"
+                    viewCount: 8
+                    timestamp: 1732785278976
+                  - id: "002"
+                    name: "PlayStation 2"
+                    viewCount: 6
+                    timestamp: 1732785265455
+                  - id: "003"
+                    name: "PlayStation 3"
+                    viewCount: 7
+                    timestamp: 1732784955434
+                  - id: "001"
+                    name: "PlayStation 1"
+                    viewCount: 5
+                    timestamp: 1732784487788
+        '401':
+          description: Unauthorized. Bearer token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized. Bearer token is missing or invalid.
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An error occurred while processing the request.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
